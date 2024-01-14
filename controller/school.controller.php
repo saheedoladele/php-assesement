@@ -12,9 +12,7 @@ if (isset($_POST['action'])) {
         case 'addSchool':
             addNewSchool();
             break;
-        case 'loadAll':
-            get_member_by_school(NULL);
-            break;
+       
     }
 }
 
@@ -30,12 +28,7 @@ function addNewSchool(){
     echo $res;
 }
 
-function getAllSchools(){
-   $school_id = 1;
-    get_member_by_school(NULL);
-    // print_r($result);
-    // echo json_encode($result);
-}
+
 
 
 

@@ -3,7 +3,21 @@
     include_once("./model/db.php");
     include_once("./model/school.model.php");
 
-    $result = get_school_by_country(NULL);
+
+    $result = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        if (isset($_POST['go'])) {
+          $country = filter_var($_POST['myCountry'], FILTER_SANITIZE_STRING);
+          $result = get_school_by_country($country);
+      
+        } 
+    }
+  
+    if (empty($result)) {
+      $result = get_school_by_country(NULL);
+  }
+
 
    $schools = json_decode($result);
 ?>
@@ -18,8 +32,10 @@
   <div class="container">
    
   <div class="top">
-     <p class="mySelect">
-        <select name="" id="" class="form-control mr-3">
+   
+
+      <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="mySelect">
+     <select name="myCountry" id="" class="form-control mr-3">
           <option value="">--Select Country--</option>
           <option value="UK">UK</option>
           <option value="USA">USA</option>
@@ -29,8 +45,9 @@
           <option value="Nigeria">Nigeria</option>
           <option value="France">France</option>
         </select>
-        <button class="btn btn-outline-primary">Go</button>
-      </p>
+
+        <button class="btn btn-outline-primary" type="submit" name="go">Go</button>
+    </form>
 
       <a href="./index.php"> Members</a>
 

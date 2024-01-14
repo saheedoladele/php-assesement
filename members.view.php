@@ -4,17 +4,22 @@
     include_once("./model/member.model.php");
     include_once("./model/school.model.php");
 
+  $result = '';
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      
+      if (isset($_POST['go'])) {
+        $school_id = filter_var($_POST['mySchool'], FILTER_SANITIZE_NUMBER_INT);
+        $result = get_member_by_school($school_id);
     
+      } 
+  }
 
-    if(isset($_POST['check'])){
-      $school_id = $_POST['mySchool'];
-      echo $school_id;
-    }
+  if (empty($result)) {
     $result = get_member_by_school(NULL);
-
+}
+  
     $sch = get_school_by_country(NULL);
     $schools = json_decode($sch);
-  
 
     $members = json_decode($result);
 ?>
@@ -27,17 +32,19 @@
   <div class="container">
    
      <div class="top">
-     <p class="mySelect">
-        <select name="mySchool" id="" class="form-control mr-3">
+
+     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="mySelect">
+     <select name="mySchool" id="" class="form-control mr-3">
           <option value="">--Select school--</option>
           <?php foreach ($schools as $school): ?>
             <option value="<?php echo $school->id  ?>"><?php echo $school->school_name ?></option>
       
       <?php endforeach; ?>
         </select>
+
+        <!-- <button type="submit" name="submitButton">Click me</button> -->
         <button class="btn btn-outline-primary" type="submit" name="go">Go</button>
-       
-      </p>
+    </form>
 
       <a href="./school.view.php"> Schools</a>
 
